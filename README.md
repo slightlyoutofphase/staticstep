@@ -11,10 +11,17 @@ This readme will likely be expanded upon in the future, but for now just run `ca
 **Minimum supported Rust version:** this is a nightly-only crate at the moment due to the use of
 the `Step` trait, which has not yet been stabilized.
 
+**`#![no_std]` compatibility:** this crate is fully `#![no_std]` compatible by default.
+
 A basic usage example:
 
 ```rust
 use staticstep::*;
+
+// Apart from aiming to provide a properly-optimized Rust equivalent to the sort of C-style for-loop
+// that ends in `i += number` or `i -= number` as opposed to `i++` or `i-`, this crate also aims to
+// (and does) support backwards ranges in a meaningful way that's logically equivalent to how
+// forwards ranges are generally dealt with in Rust.
 
 fn main() {
   // Exclusive, so 48 is the last number printed.

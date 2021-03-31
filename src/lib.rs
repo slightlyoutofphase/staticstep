@@ -1,3 +1,4 @@
+#![no_std]
 #![feature(step_trait, step_trait_ext)]
 
 use core::iter::Step;
