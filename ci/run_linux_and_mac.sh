@@ -17,9 +17,5 @@ rustup component add miri
 # The `-Zmiri-disable-isolation` is so Miri can access the system clock
 # while calling `SystemTime::now()` in one of the tests.
 export MIRIFLAGS="-Zmiri-disable-isolation"
-# We run the suite once under Miri with all functionality enabled, and then once
-# normally without the default features just to make sure `no_std` support has
-# not been broken.
-cargo miri test --features="std"
+cargo miri test
 cargo clean
-cargo test --no-default-features
