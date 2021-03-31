@@ -14,8 +14,6 @@ echo "Installing latest nightly with Miri: $MIRI_NIGHTLY"
 rustup set profile minimal
 rustup default "$MIRI_NIGHTLY"
 rustup component add miri
-# The `-Zmiri-disable-isolation` is so Miri can access the system clock
-# while calling `SystemTime::now()` in one of the tests.
-export MIRIFLAGS="-Zmiri-disable-isolation"
+# This crate doesn't even use unsafe, but hey, why not.
 cargo miri test
 cargo clean
