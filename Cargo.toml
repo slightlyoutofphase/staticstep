@@ -9,6 +9,13 @@ version = "0.1.0"
 keywords = ["iterator", "iterators", "step", "range", "ranges"]
 categories = ["data-structures", "algorithms"]
 edition = "2018"
+include = ["Cargo.toml", "rustfmt.toml", "src/**/*.rs", "README.md", "LICENSE-APACHE", "LICENSE-MIT"]
+
+[badges.maintenance]
+status = "actively-developed"
+
+[badges.appveyor]
+repository = "slightlyoutofphase/staticstep"
 
 [profile.release]
 opt-level = 3

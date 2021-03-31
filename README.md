@@ -3,6 +3,7 @@
 [Latest Version]: https://img.shields.io/crates/v/staticstep.svg
 [crates.io]: https://crates.io/crates/staticstep
 [Rustc Version nightly]: https://img.shields.io/badge/rustc-nightly-lightgray.svg
+[![Build status](https://ci.appveyor.com/api/projects/status/dw7nt480aewaux76/branch/master?svg=true)](https://ci.appveyor.com/project/slightlyoutofphase/staticstep/branch/master)
 
 Provides `inc_by()` and `dec_by()` (which are similar to `step_by()` but actually designed to optimize well for numeric ranges) for all instances of `RangeBounds<T: Copy + Default + Step>`.
 
