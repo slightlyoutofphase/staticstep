@@ -34,6 +34,8 @@ fn main() {
   for i in (64..=0).dec_by::<16>() {
     print!("{} ", i);
   }
+  // Note that `inc_by` will always immediately return `None` if given a reverse range, while
+  // `dec_by` will always immediately return `None` if given a "normal" forwards range.
 }
 ```
 

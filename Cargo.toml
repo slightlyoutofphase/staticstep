@@ -1,6 +1,6 @@
 [package]
 name = "staticstep"
-description = "Provides `inc_by()` and `dec_by()` (similar to `step_by()` but actually designed to optimize well for numeric ranges) for all instances of `RangeBounds<T: Copy + Default + Steps>`."
+description = "Provides inc_by() and dec_by() (similar to step_by() but actually designed to optimize well for numeric ranges) for all instances of RangeBounds<T: Copy + Default + Step>."
 repository = "https://github.com/slightlyoutofphase/staticstep"
 documentation = "https://docs.rs/staticstep/"
 license = "MIT OR Apache-2.0"
