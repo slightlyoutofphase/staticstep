@@ -75,13 +75,8 @@ impl<T: Copy + Default + Step, const STEP: usize> Iterator for DecBy<T, STEP> {
 
   #[inline(always)]
   fn next(&mut self) -> Option<T> {
-    if self.start == self.end {
-      let res = Some(self.start);
-      // This will make us return `None` for the following `next()` call.
-      self.end = Step::forward(self.end, STEP);
-      res
-    } else if let Some(remaining) = Step::backward_checked(self.start, STEP) {
-      if remaining > Step::backward(self.end, STEP) {
+    if let Some(remaining) = Step::backward_checked(self.start, STEP) {
+      if remaining >= Step::backward(self.end, STEP) {
         let res = Some(self.start);
         self.start = remaining;
         res
