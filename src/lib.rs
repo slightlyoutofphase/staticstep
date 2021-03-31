@@ -22,12 +22,12 @@ impl<T: Copy + Default + Step, const STEP: usize> IncBy<T, STEP> {
   fn new<R: RangeBounds<T>>(bounds: R) -> IncBy<T, STEP> {
     let start = match bounds.start_bound() {
       Included(&idx) => idx,
-      Excluded(&idx) => Step::forward(idx, STEP),
+      Excluded(&idx) => idx,
       Unbounded => Default::default(),
     };
     let end = match bounds.end_bound() {
       Included(&idx) => Step::forward(idx, STEP),
-      Excluded(&idx) => idx,
+      Excluded(&idx) => Step::forward(idx, STEP - 1),
       Unbounded => Default::default(),
     };
     IncBy { start, end }
@@ -39,7 +39,7 @@ impl<T: Copy + Default + Step, const STEP: usize> DecBy<T, STEP> {
   fn new<R: RangeBounds<T>>(bounds: R) -> DecBy<T, STEP> {
     let start = match bounds.start_bound() {
       Included(&idx) => idx,
-      Excluded(&idx) => Step::backward(idx, STEP),
+      Excluded(&idx) => idx,
       Unbounded => Default::default(),
     };
     let end = match bounds.end_bound() {
