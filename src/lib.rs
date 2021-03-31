@@ -44,7 +44,7 @@ impl<T: Copy + Default + Step, const STEP: usize> DecBy<T, STEP> {
     };
     let end = match bounds.end_bound() {
       Included(&idx) => idx,
-      Excluded(&idx) => Step::forward(idx, STEP),
+      Excluded(&idx) => Step::forward(idx, 1),
       Unbounded => Default::default(),
     };
     DecBy { start, end }
@@ -81,7 +81,7 @@ impl<T: Copy + Default + Step, const STEP: usize> Iterator for DecBy<T, STEP> {
       self.end = Step::forward(self.end, STEP);
       res
     } else if let Some(remaining) = Step::backward_checked(self.start, STEP) {
-      if remaining >= self.end {
+      if remaining > Step::backward(self.end, STEP) {
         let res = Some(self.start);
         self.start = remaining;
         res
