@@ -6,6 +6,8 @@
 
 Provides `inc_by()` and `dec_by()` (which are similar to `step_by()` but actually designed to optimize well for numeric ranges) for all instances of `RangeBounds<T: Copy + Default + Step>`.
 
+This readme will likely be expanded upon in the future, but for now just run `cargo bench` on this repository to get an idea of why you might be inclined to use this crate.
+
 **Minimum supported Rust version:** this is a nightly-only crate at the moment due to the use of
 the `Step` trait, which has not yet been stabilized.
 
