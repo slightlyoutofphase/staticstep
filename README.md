@@ -19,7 +19,7 @@ A basic usage example:
 use staticstep::*;
 
 // Apart from aiming to provide a properly-optimized Rust equivalent to the sort of C-style for-loop
-// that ends in `i += number` or `i -= number` as opposed to `i++` or `i-`, this crate also aims to
+// that ends in `i += number` or `i -= number` as opposed to `i++` or `i--`, this crate also aims to
 // (and does) support backwards ranges in a meaningful way that's logically equivalent to how
 // forwards ranges are generally dealt with in Rust.
 
