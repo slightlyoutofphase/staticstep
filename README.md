@@ -4,7 +4,7 @@
 [crates.io]: https://crates.io/crates/staticstep
 [Rustc Version nightly]: https://img.shields.io/badge/rustc-nightly-lightgray.svg
 
-Provides `inc_by()` and `dec_by()` (similar to `step_by()` but actually designed to optimize well for numeric ranges) for all instances of `RangeBounds<T: Copy + Default + Step>`.
+Provides `inc_by()` and `dec_by()` (which are similar to `step_by()` but actually designed to optimize well for numeric ranges) for all instances of `RangeBounds<T: Copy + Default + Step>`.
 
 **Minimum supported Rust version:** this is a nightly-only crate at the moment due to the use of
 the `Step` trait, which has not yet been stabilized.
