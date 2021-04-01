@@ -93,7 +93,7 @@ impl<T: Copy + Default + Step, const STEP: usize> Iterator for DecBy<T, STEP> {
   }
 }
 
-/// A supertrait of [`RangeBounds<T>`](core::ops::RangeBounds) where `T` is `Copy + Default + Step`
+/// A subtrait of [`RangeBounds<T>`](core::ops::RangeBounds) where `T` is `Copy + Default + Step`
 /// that turns implementers of it into an instance of [`IncBy`][crate::IncBy] when
 /// [`inc_by`](crate::IntoIncBy::inc_by) is called.
 pub trait IntoIncBy<T: Copy + Default + Step>: RangeBounds<T> {
@@ -117,7 +117,7 @@ pub trait IntoIncBy<T: Copy + Default + Step>: RangeBounds<T> {
   fn inc_by<const STEP: usize>(self) -> IncBy<T, STEP>;
 }
 
-/// A supertrait of [`RangeBounds<T>`](core::ops::RangeBounds) where `T` is `Copy + Default + Step`
+/// A subtrait of [`RangeBounds<T>`](core::ops::RangeBounds) where `T` is `Copy + Default + Step`
 /// that turns implementers of it into an instance of [`DecBy`][crate::DecBy] when
 /// [`dec_by`](crate::IntoDecBy::dec_by) is called.
 pub trait IntoDecBy<T: Copy + Default + Step>: RangeBounds<T> {

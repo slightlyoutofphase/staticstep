@@ -7,8 +7,8 @@
 
 Provides truly zero-cost alternatives to `Iterator::step_by` for both incrementing and decrementing any type that satisfies `RangeBounds<T: Copy + Default + Step>`.
 
-The code generated for the two trait methods this crate implements, `inc_by` and `dec_by`, should in the overwhelming majority of cases be nearly or completely identical
-to the code that would be generated for an incrementing "step"-based `while` loop or decrementing "step"-based `while` loop, respectively. If you come across a scenario where
+The assembly code generated for the two trait methods this crate implements, `inc_by` and `dec_by`, should in the overwhelming majority of cases be nearly or completely identical
+to the assembly code that would be generated for an incrementing "step"-based `while` loop or decrementing "step"-based `while` loop, respectively. If you come across a scenario where
 it is not, please feel free to open an issue about it.
 
 **Minimum supported Rust version:** this is a nightly-only crate at the moment due to the use of
