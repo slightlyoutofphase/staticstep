@@ -80,7 +80,7 @@ impl<T: Copy + Default + Step, const STEP: usize> Iterator for DecBy<T, STEP> {
   #[inline(always)]
   fn next(&mut self) -> Option<T> {
     if let Some(remaining) = Step::backward_checked(self.start, STEP) {
-      if Step::forward(remaining, STEP) >= self.end {
+      if self.start >= self.end {
         let res = Some(self.start);
         self.start = remaining;
         res
