@@ -118,7 +118,7 @@ pub trait IntoIncBy<T: Copy + Default + Step>: RangeBounds<T> {
 }
 
 /// A supertrait of [`RangeBounds<T>`](core::ops::RangeBounds) where `T` is `Copy + Default + Step`
-/// that turns implementers of it into an instance of [`DecBy`][crate::IncBy] when
+/// that turns implementers of it into an instance of [`DecBy`][crate::DecBy] when
 /// [`dec_by`](crate::IntoDecBy::dec_by) is called.
 pub trait IntoDecBy<T: Copy + Default + Step>: RangeBounds<T> {
   /// Functionally equivalent to what [`step_by`](core::iter::Iterator::step_by) does when it is
