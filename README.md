@@ -5,9 +5,11 @@
 [Rustc Version nightly]: https://img.shields.io/badge/rustc-nightly-lightgray.svg
 [![Build status](https://ci.appveyor.com/api/projects/status/dw7nt480aewaux76/branch/master?svg=true)](https://ci.appveyor.com/project/slightlyoutofphase/staticstep/branch/master)
 
-Provides `inc_by()` and `dec_by()` (which are similar to `step_by()` but actually designed to optimize well for numeric ranges) for all instances of `RangeBounds<T: Copy + Default + Step>`.
+Provides truly zero-cost alternatives to `Iterator::step_by` for both incrementing and decrementing any type that satisfies `RangeBounds<T: Copy + Default + Step>`.
 
-This readme will likely be expanded upon in the future, but for now just run `cargo bench` on the repository to get an idea of why you might be inclined to use this crate.
+The code generated for the two trait methods this crate implements, `inc_by` and `dec_by`, should in the overwhelming majority of cases be nearly or completely identical
+to the code that would be generated for an incrementing "step"-based `while` loop or decrementing "step"-based `while` loop, respectively. If you come across a scenario where
+it is note, please feel free to open an issue about it.
 
 **Minimum supported Rust version:** this is a nightly-only crate at the moment due to the use of
 the `Step` trait, which has not yet been stabilized.
@@ -30,20 +32,24 @@ fn main() {
     print!("{} ", i);
   }
   println!("");
+
   // Inclusive, so 64 is the last number printed.
   for i in (0..=64).inc_by::<16>() {
     print!("{} ", i);
   }
   println!("");
+
   // Exclusive, so 16 is the last number printed.
   for i in (64..0).dec_by::<16>() {
     print!("{} ", i);
   }
   println!("");
+
   // Inclusive, so 0 is the last number printed.
   for i in (64..=0).dec_by::<16>() {
     print!("{} ", i);
   }
+
   // Note that `inc_by` will always immediately return `None` if given a reverse range, while
   // `dec_by` will always immediately return `None` if given a "normal" forwards range.
 }

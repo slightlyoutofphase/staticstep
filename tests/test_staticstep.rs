@@ -23,7 +23,7 @@ fn inc_by_inclusive() {
 
 #[test]
 fn dec_by_exclusive() {
-  let mut r = (64..0).dec_by::<16>();
+  let mut r = (64usize..0usize).dec_by::<16usize>();
   assert_eq!(r.next(), Some(64));
   assert_eq!(r.next(), Some(48));
   assert_eq!(r.next(), Some(32));
@@ -144,5 +144,43 @@ fn dec_by_inclusive_negative_end_uneven_step() {
   assert_eq!(r.next(), Some(10));
   assert_eq!(r.next(), Some(-17));
   assert_eq!(r.next(), Some(-44));
+  assert_eq!(r.next(), None);
+}
+
+#[test]
+fn inc_by_exclusive_char_range() {
+  let mut r = ('A'..'G').inc_by::<2>();
+  assert_eq!(r.next(), Some('A'));
+  assert_eq!(r.next(), Some('C'));
+  assert_eq!(r.next(), Some('E'));
+  assert_eq!(r.next(), None);
+}
+
+#[test]
+fn inc_by_inclusive_char_range() {
+  let mut r = ('A'..='G').inc_by::<2>();
+  assert_eq!(r.next(), Some('A'));
+  assert_eq!(r.next(), Some('C'));
+  assert_eq!(r.next(), Some('E'));
+  assert_eq!(r.next(), Some('G'));
+  assert_eq!(r.next(), None);
+}
+
+#[test]
+fn dec_by_exclusive_char_range() {
+  let mut r = ('G'..'A').dec_by::<2>();
+  assert_eq!(r.next(), Some('G'));
+  assert_eq!(r.next(), Some('E'));
+  assert_eq!(r.next(), Some('C'));
+  assert_eq!(r.next(), None);
+}
+
+#[test]
+fn dec_by_inclusive_char_range() {
+  let mut r = ('G'..='A').dec_by::<2>();
+  assert_eq!(r.next(), Some('G'));
+  assert_eq!(r.next(), Some('E'));
+  assert_eq!(r.next(), Some('C'));
+  assert_eq!(r.next(), Some('A'));
   assert_eq!(r.next(), None);
 }

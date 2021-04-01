@@ -1,11 +1,11 @@
 [package]
 name = "staticstep"
-description = "Provides inc_by() and dec_by() (similar to step_by() but actually designed to optimize well for numeric ranges) for all instances of RangeBounds<T: Copy + Default + Step>."
+description = "Provides truly zero-cost alternatives to `Iterator::step_by` for both incrementing and decrementing any type that satisfies `RangeBounds<T: Copy + Default + Step>`."
 repository = "https://github.com/slightlyoutofphase/staticstep"
 documentation = "https://docs.rs/staticstep/"
 license = "MIT OR Apache-2.0"
 readme = "README.md"
-version = "0.1.0"
+version = "0.2.0"
 keywords = ["iterator", "iterators", "step", "range", "ranges"]
 categories = ["data-structures", "algorithms"]
 edition = "2018"
