@@ -41,14 +41,14 @@ impl<T: Copy + Default + Step, const STEP: usize> IncBy<T, STEP> {
 impl<T: Copy + Default + Step, const STEP: usize> DecBy<T, STEP> {
   #[inline(always)]
   fn new<R: RangeBounds<T>>(bounds: R) -> DecBy<T, STEP> {
-    let start = match bounds.start_bound() {
-      Included(&idx) => idx,
-      Excluded(&idx) => idx,
-      Unbounded => Default::default(),
-    };
-    let end = match bounds.end_bound() {
+    let start = match bounds.end_bound() {
       Included(&idx) => idx,
       Excluded(&idx) => Step::forward(idx, 1),
+      Unbounded => Step::forward(Default::default(), 1),
+    };
+    let end = match bounds.start_bound() {
+      Included(&idx) => Step::forward(idx, STEP),
+      Excluded(&idx) => Step::forward(idx, STEP + 1),
       Unbounded => Default::default(),
     };
     DecBy { start, end }
@@ -60,14 +60,10 @@ impl<T: Copy + Default + Step, const STEP: usize> Iterator for IncBy<T, STEP> {
 
   #[inline(always)]
   fn next(&mut self) -> Option<T> {
-    if let Some(remaining) = Step::backward_checked(self.end, STEP) {
-      if remaining >= self.start {
-        let res = Some(self.start);
-        self.start = Step::forward(self.start, STEP);
-        res
-      } else {
-        None
-      }
+    if self.start <= Step::backward(self.end, STEP) {
+      let res = Some(self.start);
+      self.start = Step::forward(self.start, STEP);
+      res
     } else {
       None
     }
@@ -79,14 +75,9 @@ impl<T: Copy + Default + Step, const STEP: usize> Iterator for DecBy<T, STEP> {
 
   #[inline(always)]
   fn next(&mut self) -> Option<T> {
-    if let Some(remaining) = Step::backward_checked(self.start, STEP) {
-      if self.start >= self.end {
-        let res = Some(self.start);
-        self.start = remaining;
-        res
-      } else {
-        None
-      }
+    if Step::forward(self.start, STEP) <= self.end {
+      self.end = Step::backward(self.end, STEP);
+      Some(self.end)
     } else {
       None
     }

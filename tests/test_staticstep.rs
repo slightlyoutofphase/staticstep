@@ -11,6 +11,16 @@ fn inc_by_exclusive() {
 }
 
 #[test]
+fn inc_by_exclusive_unbound_start() {
+  let mut r = (..64).inc_by::<16>();
+  assert_eq!(r.next(), Some(0));
+  assert_eq!(r.next(), Some(16));
+  assert_eq!(r.next(), Some(32));
+  assert_eq!(r.next(), Some(48));
+  assert_eq!(r.next(), None);
+}
+
+#[test]
 fn inc_by_inclusive() {
   let mut r = (0..=64).inc_by::<16>();
   assert_eq!(r.next(), Some(0));
@@ -22,8 +32,19 @@ fn inc_by_inclusive() {
 }
 
 #[test]
-fn dec_by_exclusive() {
-  let mut r = (64usize..0usize).dec_by::<16usize>();
+fn inc_by_inclusive_unbound_start() {
+  let mut r = (..=64).inc_by::<16>();
+  assert_eq!(r.next(), Some(0));
+  assert_eq!(r.next(), Some(16));
+  assert_eq!(r.next(), Some(32));
+  assert_eq!(r.next(), Some(48));
+  assert_eq!(r.next(), Some(64));
+  assert_eq!(r.next(), None);
+}
+
+#[test]
+fn dec_by_exclusive_usize() {
+  let mut r = (64usize..0usize).dec_by::<16>();
   assert_eq!(r.next(), Some(64));
   assert_eq!(r.next(), Some(48));
   assert_eq!(r.next(), Some(32));
@@ -32,13 +53,44 @@ fn dec_by_exclusive() {
 }
 
 #[test]
-fn dec_by_inclusive() {
-  let mut r = (64..=0).dec_by::<16>();
+fn dec_by_inclusive_usize() {
+  let mut r = (64usize..=0usize).dec_by::<16>();
   assert_eq!(r.next(), Some(64));
   assert_eq!(r.next(), Some(48));
   assert_eq!(r.next(), Some(32));
   assert_eq!(r.next(), Some(16));
   assert_eq!(r.next(), Some(0));
+  assert_eq!(r.next(), None);
+}
+
+#[test]
+fn dec_by_exclusive_isize() {
+  let mut r = (64isize..0isize).dec_by::<16>();
+  assert_eq!(r.next(), Some(64));
+  assert_eq!(r.next(), Some(48));
+  assert_eq!(r.next(), Some(32));
+  assert_eq!(r.next(), Some(16));
+  assert_eq!(r.next(), None);
+}
+
+#[test]
+fn dec_by_inclusive_isize() {
+  let mut r = (64isize..=0isize).dec_by::<16>();
+  assert_eq!(r.next(), Some(64));
+  assert_eq!(r.next(), Some(48));
+  assert_eq!(r.next(), Some(32));
+  assert_eq!(r.next(), Some(16));
+  assert_eq!(r.next(), Some(0));
+  assert_eq!(r.next(), None);
+}
+
+#[test]
+fn dec_by_exclusive_unbound_end() {
+  let mut r = (64isize..).dec_by::<16>();
+  assert_eq!(r.next(), Some(64));
+  assert_eq!(r.next(), Some(48));
+  assert_eq!(r.next(), Some(32));
+  assert_eq!(r.next(), Some(16));
   assert_eq!(r.next(), None);
 }
 

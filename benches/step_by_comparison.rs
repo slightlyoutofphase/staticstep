@@ -8,9 +8,9 @@ use staticstep::*;
 
 #[bench]
 fn inc_by_exclusive(b: &mut Bencher) {
-  let mut j = 0;
+  let mut j = 0usize;
   b.iter(|| {
-    for i in (0..32768).inc_by::<16>() {
+    for i in (0usize..32768usize).inc_by::<16usize>() {
       j += black_box(i);
     }
   });
@@ -18,9 +18,9 @@ fn inc_by_exclusive(b: &mut Bencher) {
 
 #[bench]
 fn inc_by_inclusive(b: &mut Bencher) {
-  let mut j = 0;
+  let mut j = 0usize;
   b.iter(|| {
-    for i in (0..=32768).inc_by::<16>() {
+    for i in (0usize..=32768usize).inc_by::<16usize>() {
       j += black_box(i);
     }
   });
@@ -28,9 +28,9 @@ fn inc_by_inclusive(b: &mut Bencher) {
 
 #[bench]
 fn dec_by_exclusive(b: &mut Bencher) {
-  let mut j = 0;
+  let mut j = 0usize;
   b.iter(|| {
-    for i in (32768..0).dec_by::<16>() {
+    for i in (32768usize..0usize).dec_by::<16usize>() {
       j += black_box(i);
     }
   });
@@ -38,9 +38,9 @@ fn dec_by_exclusive(b: &mut Bencher) {
 
 #[bench]
 fn dec_by_inclusive(b: &mut Bencher) {
-  let mut j = 0;
+  let mut j = 0usize;
   b.iter(|| {
-    for i in (32768..=0).dec_by::<16>() {
+    for i in (32768usize..=0usize).dec_by::<16usize>() {
       j += black_box(i);
     }
   });
@@ -48,9 +48,9 @@ fn dec_by_inclusive(b: &mut Bencher) {
 
 #[bench]
 fn step_by_inc_exclusive(b: &mut Bencher) {
-  let mut j = 0;
+  let mut j = 0usize;
   b.iter(|| {
-    for i in (0..32768).step_by(16) {
+    for i in (0usize..32768usize).step_by(16usize) {
       j += black_box(i);
     }
   });
@@ -58,9 +58,9 @@ fn step_by_inc_exclusive(b: &mut Bencher) {
 
 #[bench]
 fn step_by_inc_inclusive(b: &mut Bencher) {
-  let mut j = 0;
+  let mut j = 0usize;
   b.iter(|| {
-    for i in (0..=32768).step_by(16) {
+    for i in (0usize..=32768usize).step_by(16usize) {
       j += black_box(i);
     }
   });
@@ -68,9 +68,9 @@ fn step_by_inc_inclusive(b: &mut Bencher) {
 
 #[bench]
 fn step_by_dec_exclusive(b: &mut Bencher) {
-  let mut j = 0;
+  let mut j = 0usize;
   b.iter(|| {
-    for i in (16..32784).step_by(16).rev() {
+    for i in (16usize..32784usize).step_by(16usize).rev() {
       j += black_box(i);
     }
   });
@@ -78,9 +78,9 @@ fn step_by_dec_exclusive(b: &mut Bencher) {
 
 #[bench]
 fn step_by_dec_inclusive(b: &mut Bencher) {
-  let mut j = 0;
+  let mut j = 0usize;
   b.iter(|| {
-    for i in (0..=32768).rev().step_by(16) {
+    for i in (0usize..=32768usize).rev().step_by(16usize) {
       j += black_box(i);
     }
   });
