@@ -1,5 +1,5 @@
 #![no_std]
-#![feature(step_trait, step_trait_ext)]
+#![feature(step_trait)]
 
 use core::iter::Step;
 use core::ops::{
