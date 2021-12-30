@@ -238,7 +238,7 @@ fn dec_by_inclusive_char_range() {
 }
 
 #[test]
-fn inc_by_type_dependent_overflow() {
+fn inc_by_exclusive_type_dependent_overflow() {
   let mut r = (248u8..255u8).inc_by::<50>();
   assert_eq!(r.next(), Some(248));
   assert_eq!(r.next(), None);
@@ -248,6 +248,10 @@ fn inc_by_type_dependent_overflow() {
   let mut r3 = (248i32..255i32).inc_by::<{ u32::MAX as usize }>();
   assert_eq!(r3.next(), Some(248));
   assert_eq!(r3.next(), None);
+}
+
+#[test]
+fn inc_by_inclusive_type_dependent_overflow() {
   let mut r4 = (248u8..=255u8).inc_by::<50>();
   assert_eq!(r4.next(), Some(248));
   assert_eq!(r4.next(), None);
