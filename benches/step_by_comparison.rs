@@ -6,6 +6,10 @@ use test::{black_box, Bencher};
 
 use staticstep::*;
 
+// We use explicit `usize` variables everywhere here just to
+// make sure the compiler doesn't do any integer-type
+// optimizations that would make the benchmark less fair.
+
 #[bench]
 fn inc_by_exclusive(b: &mut Bencher) {
   let mut j = 0usize;
@@ -70,6 +74,9 @@ fn step_by_inc_inclusive(b: &mut Bencher) {
 fn step_by_dec_exclusive(b: &mut Bencher) {
   let mut j = 0usize;
   b.iter(|| {
+    // There's no other way to write this such that it goes
+    // over the exact same numbers as the other versions and
+    // also stops in the same place.
     for i in (16usize..32784usize).step_by(16usize).rev() {
       j += black_box(i);
     }
