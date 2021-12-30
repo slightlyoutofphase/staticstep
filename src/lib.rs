@@ -12,6 +12,7 @@ use core::ops::{
 pub struct IncBy<T: Copy + Default + Step, const STEP: usize> {
   start: T,
   end: T,
+  had_overflow: bool,
 }
 
 /// The [`Iterator`](core::iter::Iterator)-implementing struct through which the functionality of
@@ -29,12 +30,33 @@ impl<T: Copy + Default + Step, const STEP: usize> IncBy<T, STEP> {
       Excluded(&idx) => idx,
       Unbounded => Default::default(),
     };
+    let mut had_overflow = false;
     let end = match bounds.end_bound() {
-      Included(&idx) => Step::forward(idx, STEP),
-      Excluded(&idx) => Step::forward_checked(idx, STEP - 1).unwrap_or(idx),
+      Included(&idx) => {
+        let res = Step::forward_checked(idx, STEP);
+        if res.is_some() {
+          res.unwrap()
+        } else {
+          had_overflow = true;
+          idx
+        }
+      }
+      Excluded(&idx) => {
+        let res = Step::forward_checked(idx, STEP - 1);
+        if res.is_some() {
+          res.unwrap()
+        } else {
+          had_overflow = true;
+          idx
+        }
+      }
       Unbounded => Default::default(),
     };
-    IncBy { start, end }
+    IncBy {
+      start,
+      end,
+      had_overflow,
+    }
   }
 }
 
@@ -60,7 +82,12 @@ impl<T: Copy + Default + Step, const STEP: usize> Iterator for IncBy<T, STEP> {
 
   #[inline(always)]
   fn next(&mut self) -> Option<T> {
-    if let Some(end_back) = Step::backward_checked(self.end, STEP) {
+    if self.had_overflow {
+      self.had_overflow = false;
+      let res = self.start;
+      core::mem::swap(&mut self.start, &mut self.end);
+      Some(res)
+    } else if let Some(end_back) = Step::backward_checked(self.end, STEP) {
       if self.start <= end_back {
         let res = Some(self.start);
         self.start = Step::forward(self.start, STEP);
