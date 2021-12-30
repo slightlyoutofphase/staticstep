@@ -4,6 +4,7 @@
 [crates.io]: https://crates.io/crates/staticstep
 [Rustc Version nightly]: https://img.shields.io/badge/rustc-nightly-lightgray.svg
 [![Build status](https://ci.appveyor.com/api/projects/status/dw7nt480aewaux76/branch/master?svg=true)](https://ci.appveyor.com/project/slightlyoutofphase/staticstep/branch/master)
+[![docs.rs](https://docs.rs/staticstep/badge.svg)](https://docs.rs/staticstep/)
 
 Provides truly zero-cost alternatives to `Iterator::step_by` for both incrementing and decrementing any type that satisfies `RangeBounds<T: Copy + Default + Step>`.
 
