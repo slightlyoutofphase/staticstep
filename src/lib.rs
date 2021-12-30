@@ -1,6 +1,7 @@
 #![no_std]
-#![feature(step_trait)]
+#![feature(core_intrinsics, step_trait)]
 
+use core::intrinsics::{likely, unlikely};
 use core::iter::Step;
 use core::ops::{
   Bound::{Excluded, Included, Unbounded},
@@ -33,18 +34,16 @@ impl<T: Copy + Default + Step, const STEP: usize> IncBy<T, STEP> {
     let mut had_overflow = false;
     let end = match bounds.end_bound() {
       Included(&idx) => {
-        let res = Step::forward_checked(idx, STEP);
-        if res.is_some() {
-          res.unwrap()
+        if let Some(res) = Step::forward_checked(idx, STEP) {
+          res
         } else {
           had_overflow = true;
           idx
         }
       }
       Excluded(&idx) => {
-        let res = Step::forward_checked(idx, STEP - 1);
-        if res.is_some() {
-          res.unwrap()
+        if let Some(res) = Step::forward_checked(idx, STEP - 1) {
+          res
         } else {
           had_overflow = true;
           idx
@@ -82,13 +81,11 @@ impl<T: Copy + Default + Step, const STEP: usize> Iterator for IncBy<T, STEP> {
 
   #[inline(always)]
   fn next(&mut self) -> Option<T> {
-    if self.had_overflow {
+    if unlikely(self.had_overflow) {
       self.had_overflow = false;
-      let res = self.start;
-      core::mem::swap(&mut self.start, &mut self.end);
-      Some(res)
+      Some(self.start)
     } else if let Some(end_back) = Step::backward_checked(self.end, STEP) {
-      if self.start <= end_back {
+      if likely(self.start <= end_back) {
         let res = Some(self.start);
         self.start = Step::forward(self.start, STEP);
         res
