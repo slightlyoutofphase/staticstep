@@ -236,3 +236,13 @@ fn dec_by_inclusive_char_range() {
   assert_eq!(r.next(), Some('A'));
   assert_eq!(r.next(), None);
 }
+
+#[test]
+fn inc_by_type_dependent_overflow() {
+  let mut r = (248u8..255u8).inc_by::<50>();
+  assert_eq!(r.next(), None);
+  let mut r2 = (248u32..255u32).inc_by::<{ usize::MAX }>();
+  assert_eq!(r2.next(), None);
+  let mut r3 = (248i32..255i32).inc_by::<{ u32::MAX as usize }>();
+  assert_eq!(r3.next(), None);
+}

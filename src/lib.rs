@@ -31,7 +31,7 @@ impl<T: Copy + Default + Step, const STEP: usize> IncBy<T, STEP> {
     };
     let end = match bounds.end_bound() {
       Included(&idx) => Step::forward(idx, STEP),
-      Excluded(&idx) => Step::forward(idx, STEP - 1),
+      Excluded(&idx) => Step::forward_checked(idx, STEP - 1).unwrap_or(idx),
       Unbounded => Default::default(),
     };
     IncBy { start, end }
@@ -60,10 +60,14 @@ impl<T: Copy + Default + Step, const STEP: usize> Iterator for IncBy<T, STEP> {
 
   #[inline(always)]
   fn next(&mut self) -> Option<T> {
-    if self.start <= Step::backward(self.end, STEP) {
-      let res = Some(self.start);
-      self.start = Step::forward(self.start, STEP);
-      res
+    if let Some(end_back) = Step::backward_checked(self.end, STEP) {
+      if self.start <= end_back {
+        let res = Some(self.start);
+        self.start = Step::forward(self.start, STEP);
+        res
+      } else {
+        None
+      }
     } else {
       None
     }
