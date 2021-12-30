@@ -245,4 +245,13 @@ fn inc_by_type_dependent_overflow() {
   assert_eq!(r2.next(), None);
   let mut r3 = (248i32..255i32).inc_by::<{ u32::MAX as usize }>();
   assert_eq!(r3.next(), None);
+  // We already check this in multiple other tests, but below we look
+  // to see if only overflowing the *range* as opposed to overflowing
+  // some specific type still returns `Some` at least once, which it should.
+  let mut r4 = (248..255).inc_by::<50>();
+  assert_eq!(r4.next(), Some(248));
+  assert_eq!(r4.next(), None);
+  let mut r5 = (248usize..255usize).inc_by::<{ u32::MAX as usize }>();
+  assert_eq!(r5.next(), Some(248));
+  assert_eq!(r5.next(), None);
 }
