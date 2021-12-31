@@ -21,6 +21,7 @@ pub struct IncBy<T: Copy + Default + Step, const STEP: usize> {
 pub struct DecBy<T: Copy + Default + Step, const STEP: usize> {
   start: T,
   end: T,
+  had_overflow: bool,
 }
 
 impl<T: Copy + Default + Step, const STEP: usize> IncBy<T, STEP> {
@@ -67,12 +68,31 @@ impl<T: Copy + Default + Step, const STEP: usize> DecBy<T, STEP> {
       Excluded(&idx) => Step::forward(idx, 1),
       Unbounded => Step::forward(Default::default(), 1),
     };
+    let mut had_overflow = false;
     let end = match bounds.start_bound() {
-      Included(&idx) => Step::forward(idx, STEP),
-      Excluded(&idx) => Step::forward(idx, STEP + 1),
+      Included(&idx) => {
+        if let Some(res) = Step::forward_checked(idx, STEP) {
+          res
+        } else {
+          had_overflow = true;
+          idx
+        }
+      }
+      Excluded(&idx) => {
+        if let Some(res) = Step::forward_checked(idx, STEP + 1) {
+          res
+        } else {
+          had_overflow = true;
+          idx
+        }
+      }
       Unbounded => Default::default(),
     };
-    DecBy { start, end }
+    DecBy {
+      start,
+      end,
+      had_overflow,
+    }
   }
 }
 
@@ -103,9 +123,16 @@ impl<T: Copy + Default + Step, const STEP: usize> Iterator for DecBy<T, STEP> {
 
   #[inline(always)]
   fn next(&mut self) -> Option<T> {
-    if Step::forward(self.start, STEP) <= self.end {
-      self.end = Step::backward(self.end, STEP);
+    if unlikely(self.had_overflow) {
+      self.had_overflow = false;
       Some(self.end)
+    } else if let Some(start_forward) = Step::forward_checked(self.start, STEP) {
+      if likely(start_forward <= self.end) {
+        self.end = Step::backward(self.end, STEP);
+        Some(self.end)
+      } else {
+        None
+      }
     } else {
       None
     }
