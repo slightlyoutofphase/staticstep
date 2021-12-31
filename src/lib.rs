@@ -143,7 +143,7 @@ impl<T: Copy + Default + Step, const STEP: usize> Iterator for DecBy<T, STEP> {
 /// that turns implementers of it into an instance of [`IncBy`][crate::IncBy] when
 /// [`inc_by`](crate::IntoIncBy::inc_by) is called. Currently, the blanket implementation of this
 /// trait exported from the crate for `RangeBounds` is the only possible useful implementation, but
-/// it was decided not to make it a `Sealed` trait in case additional methods are added in the
+/// it was decided not to make it a "sealed" trait in case additional methods are added in the
 /// future that would be implementable by end-user code in a meaningfully varied way.
 pub trait IntoIncBy<T: Copy + Default + Step>: RangeBounds<T> {
   /// Functionally equivalent to what [`step_by`](core::iter::Iterator::step_by) does when it is
@@ -170,7 +170,7 @@ pub trait IntoIncBy<T: Copy + Default + Step>: RangeBounds<T> {
 /// that turns implementers of it into an instance of [`DecBy`][crate::DecBy] when
 /// [`dec_by`](crate::IntoDecBy::dec_by) is called. Currently, the blanket implementation of this
 /// trait exported from the crate for `RangeBounds` is the only possible useful implementation, but
-/// it was decided not to make it a `Sealed` trait in case additional methods are added in the
+/// it was decided not to make it a "sealed" trait in case additional methods are added in the
 /// future that would be implementable by end-user code in a meaningfully varied way.
 pub trait IntoDecBy<T: Copy + Default + Step>: RangeBounds<T> {
   /// Functionally equivalent to what [`step_by`](core::iter::Iterator::step_by) does when it is
