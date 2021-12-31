@@ -152,3 +152,31 @@ fn step_by_dec_inclusive(b: &mut Bencher) {
     let _ = black_box(j);
   });
 }
+
+#[bench]
+fn inc_by_zip(b: &mut Bencher) {
+  b.iter(|| {
+    let mut k = 0usize;
+    for (i, j) in (0usize..=8192usize)
+      .inc_by::<27usize>()
+      .zip((8192usize..=0usize).dec_by::<27usize>())
+    {
+      k += black_box(i + j);
+    }
+    let _ = black_box(k);
+  });
+}
+
+#[bench]
+fn step_by_zip(b: &mut Bencher) {
+  b.iter(|| {
+    let mut k = 0usize;
+    for (i, j) in (0usize..=8192usize)
+      .step_by(27usize)
+      .zip((0usize..=8192usize).rev().step_by(27usize))
+    {
+      k += black_box(i + j);
+    }
+    let _ = black_box(k);
+  });
+}
