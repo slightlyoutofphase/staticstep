@@ -8,12 +8,17 @@ use core::ops::{
   RangeBounds,
 };
 
+use crate::utils::max_value;
+
+mod utils;
+
 /// The [`Iterator`](core::iter::Iterator)-implementing struct through which the functionality of
 /// [`inc_by`](crate::IntoIncBy::inc_by) actually operates. Not useful by itself.
 pub struct IncBy<T: Copy + Default + Step, const STEP: usize> {
   start: T,
   end: T,
   had_overflow: bool,
+  was_unbound: bool,
 }
 
 /// The [`Iterator`](core::iter::Iterator)-implementing struct through which the functionality of
@@ -33,6 +38,7 @@ impl<T: Copy + Default + Step, const STEP: usize> IncBy<T, STEP> {
       Unbounded => Default::default(),
     };
     let mut had_overflow = false;
+    let mut was_unbound = false;
     let end = match bounds.end_bound() {
       Included(&idx) => {
         if let Some(res) = Step::forward_checked(idx, STEP) {
@@ -50,12 +56,16 @@ impl<T: Copy + Default + Step, const STEP: usize> IncBy<T, STEP> {
           idx
         }
       }
-      Unbounded => Default::default(),
+      Unbounded => {
+        was_unbound = true;
+        Step::forward(Default::default(), max_value(&start))
+      }
     };
     IncBy {
       start,
       end,
       had_overflow,
+      was_unbound,
     }
   }
 }
@@ -109,6 +119,9 @@ impl<T: Copy + Default + Step, const STEP: usize> Iterator for IncBy<T, STEP> {
         let res = Some(self.start);
         self.start = Step::forward(self.start, STEP);
         res
+      } else if unlikely(self.was_unbound) {
+        self.was_unbound = false;
+        Some(self.start)
       } else {
         None
       }

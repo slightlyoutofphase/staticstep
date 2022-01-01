@@ -21,6 +21,48 @@ fn inc_by_exclusive_unbound_start() {
 }
 
 #[test]
+fn inc_by_unbound_end_u8() {
+  let mut r = (0u8..).inc_by::<16>();
+  assert_eq!(r.next(), Some(0));
+  assert_eq!(r.next(), Some(16));
+  assert_eq!(r.next(), Some(32));
+  assert_eq!(r.next(), Some(48));
+  assert_eq!(r.next(), Some(64));
+  assert_eq!(r.next(), Some(80));
+  assert_eq!(r.next(), Some(96));
+  assert_eq!(r.next(), Some(112));
+  assert_eq!(r.next(), Some(128));
+  assert_eq!(r.next(), Some(144));
+  assert_eq!(r.next(), Some(160));
+  assert_eq!(r.next(), Some(176));
+  assert_eq!(r.next(), Some(192));
+  assert_eq!(r.next(), Some(208));
+  assert_eq!(r.next(), Some(224));
+  assert_eq!(r.next(), Some(240));
+}
+
+#[test]
+fn inc_by_unbound_end_usize() {
+  let mut r = (0usize..).inc_by::<16>();
+  assert_eq!(r.next(), Some(0));
+  assert_eq!(r.next(), Some(16));
+  assert_eq!(r.next(), Some(32));
+  assert_eq!(r.next(), Some(48));
+  assert_eq!(r.next(), Some(64));
+  assert_eq!(r.next(), Some(80));
+  assert_eq!(r.next(), Some(96));
+  assert_eq!(r.next(), Some(112));
+  assert_eq!(r.next(), Some(128));
+  assert_eq!(r.next(), Some(144));
+  assert_eq!(r.next(), Some(160));
+  assert_eq!(r.next(), Some(176));
+  assert_eq!(r.next(), Some(192));
+  assert_eq!(r.next(), Some(208));
+  assert_eq!(r.next(), Some(224));
+  assert_eq!(r.next(), Some(240));
+}
+
+#[test]
 fn inc_by_inclusive() {
   let mut r = (0..=64).inc_by::<16>();
   assert_eq!(r.next(), Some(0));
