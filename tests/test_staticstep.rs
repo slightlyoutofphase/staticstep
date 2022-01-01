@@ -39,6 +39,7 @@ fn inc_by_unbound_end_u8() {
   assert_eq!(r.next(), Some(208));
   assert_eq!(r.next(), Some(224));
   assert_eq!(r.next(), Some(240));
+  assert_eq!(r.next(), None);
 }
 
 #[test]
@@ -60,6 +61,9 @@ fn inc_by_unbound_end_usize() {
   assert_eq!(r.next(), Some(208));
   assert_eq!(r.next(), Some(224));
   assert_eq!(r.next(), Some(240));
+  // We just want to make sure this isn't `None`, since that would only make sense for `u8` as in
+  // the above test.
+  assert_eq!(r.next(), Some(256));
 }
 
 #[test]
