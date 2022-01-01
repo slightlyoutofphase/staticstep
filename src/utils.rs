@@ -4,7 +4,7 @@ use core::iter::Step;
 // Note that the compiler is able to trivially evaluate it down to a constant,
 // so it has zero impact on performance.
 #[inline(always)]
-pub(crate) fn max_value<T: Copy + Default + Step>(_s: &T) -> usize {
+pub(crate) fn max_value<T: Copy + Default + Step>(_val: &T) -> usize {
   if Step::forward_checked(T::default(), usize::MAX).is_some() {
     usize::MAX
   // Best we can do here currently, as `Step` itself isn't really designed in a way that accounts
@@ -36,7 +36,7 @@ pub(crate) fn max_value<T: Copy + Default + Step>(_s: &T) -> usize {
   } else {
     // No better way to handle this at the moment. Not a huge deal IMO, as you'd have to be using
     // explicit `RangeFrom` syntax on some kind of struct or enum with a custom `RangeBounds`
-    // implementation to get here anyways, and that seems like a really nice / unlikely scenario.
+    // implementation to get here anyways, and that seems like a really niche / unlikely scenario.
     Default::default()
   }
 }
