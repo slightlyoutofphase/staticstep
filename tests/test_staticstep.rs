@@ -11,6 +11,31 @@ fn inc_by_exclusive() {
 }
 
 #[test]
+fn inc_by_exclusive_negative_start_even_step() {
+  let mut r = (-64isize..64isize).step_by(16);
+  assert_eq!(r.next(), Some(-64));
+  assert_eq!(r.next(), Some(-48));
+  assert_eq!(r.next(), Some(-32));
+  assert_eq!(r.next(), Some(-16));
+  assert_eq!(r.next(), Some(0));
+  assert_eq!(r.next(), Some(16));
+  assert_eq!(r.next(), Some(32));
+  assert_eq!(r.next(), Some(48));
+  assert_eq!(r.next(), None);
+}
+
+#[test]
+fn inc_by_exclusive_negative_start_uneven_step() {
+  let mut r = (-64isize..64isize).step_by(27);
+  assert_eq!(r.next(), Some(-64));
+  assert_eq!(r.next(), Some(-37));
+  assert_eq!(r.next(), Some(-10));
+  assert_eq!(r.next(), Some(17));
+  assert_eq!(r.next(), Some(44));
+  assert_eq!(r.next(), None);
+}
+
+#[test]
 fn inc_by_exclusive_unbound_start() {
   let mut r = (..64).inc_by::<16>();
   assert_eq!(r.next(), Some(0));
@@ -74,6 +99,32 @@ fn inc_by_inclusive() {
   assert_eq!(r.next(), Some(32));
   assert_eq!(r.next(), Some(48));
   assert_eq!(r.next(), Some(64));
+  assert_eq!(r.next(), None);
+}
+
+#[test]
+fn inc_by_inclusive_negative_start_even_step() {
+  let mut r = (-64isize..=64isize).step_by(16);
+  assert_eq!(r.next(), Some(-64));
+  assert_eq!(r.next(), Some(-48));
+  assert_eq!(r.next(), Some(-32));
+  assert_eq!(r.next(), Some(-16));
+  assert_eq!(r.next(), Some(0));
+  assert_eq!(r.next(), Some(16));
+  assert_eq!(r.next(), Some(32));
+  assert_eq!(r.next(), Some(48));
+  assert_eq!(r.next(), Some(64));
+  assert_eq!(r.next(), None);
+}
+
+#[test]
+fn inc_by_inclusive_negative_start_uneven_step() {
+  let mut r = (-64isize..=64isize).step_by(27);
+  assert_eq!(r.next(), Some(-64));
+  assert_eq!(r.next(), Some(-37));
+  assert_eq!(r.next(), Some(-10));
+  assert_eq!(r.next(), Some(17));
+  assert_eq!(r.next(), Some(44));
   assert_eq!(r.next(), None);
 }
 
@@ -320,17 +371,23 @@ fn dec_by_exclusive_type_dependent_overflow() {
   let mut r9 = (255i32..248i32).dec_by::<{ u32::MAX as usize }>();
   assert_eq!(r9.next(), Some(255));
   assert_eq!(r9.next(), None);
+  let mut r10 = (i16::MAX..i16::MAX).dec_by::<1>();
+  assert_eq!(r10.next(), Some(32767));
+  assert_eq!(r10.next(), None);
 }
 
 #[test]
 fn dec_by_inclusive_type_dependent_overflow() {
-  let mut r10 = (255u8..=248u8).dec_by::<50>();
-  assert_eq!(r10.next(), Some(255));
-  assert_eq!(r10.next(), None);
-  let mut r11 = (255u32..=248u32).dec_by::<{ usize::MAX }>();
+  let mut r11 = (255u8..=248u8).dec_by::<50>();
   assert_eq!(r11.next(), Some(255));
   assert_eq!(r11.next(), None);
-  let mut r12 = (255i32..=248i32).dec_by::<{ u32::MAX as usize }>();
+  let mut r12 = (255u32..=248u32).dec_by::<{ usize::MAX }>();
   assert_eq!(r12.next(), Some(255));
   assert_eq!(r12.next(), None);
+  let mut r13 = (255i32..=248i32).dec_by::<{ u32::MAX as usize }>();
+  assert_eq!(r13.next(), Some(255));
+  assert_eq!(r13.next(), None);
+  let mut r14 = (i16::MAX..=i16::MAX).dec_by::<1>();
+  assert_eq!(r14.next(), Some(32767));
+  assert_eq!(r14.next(), None);
 }

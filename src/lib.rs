@@ -75,7 +75,7 @@ impl<T: Copy + Default + Step, const STEP: usize> DecBy<T, STEP> {
   fn new<R: RangeBounds<T>>(bounds: R) -> DecBy<T, STEP> {
     let start = match bounds.end_bound() {
       Included(&idx) => idx,
-      Excluded(&idx) => Step::forward(idx, 1),
+      Excluded(&idx) => Step::forward_checked(idx, 1).unwrap_or(idx),
       Unbounded => Step::forward(Default::default(), 1),
     };
     let mut had_overflow = false;
@@ -113,7 +113,9 @@ impl<T: Copy + Default + Step, const STEP: usize> Iterator for IncBy<T, STEP> {
   fn next(&mut self) -> Option<T> {
     if unlikely(self.had_overflow) {
       self.had_overflow = false;
-      Some(self.start)
+      let res = Some(self.start);
+      self.start = Step::forward_checked(self.start, STEP).unwrap_or(self.start);
+      res
     } else if let Some(end_back) = Step::backward_checked(self.end, STEP) {
       if likely(self.start <= end_back) {
         let res = Some(self.start);
